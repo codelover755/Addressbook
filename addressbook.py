@@ -35,7 +35,31 @@ def display(event):
 def save():
     s = asksaveasfile(defaultextension=".txt")
     print(myAddressBook,file=s)
-    
+
+def edit_file():
+    clear_all()
+    key = book_list.curselection()
+    n_entry.insert(0,book_list.get(key))
+    details = myAddressBook[n_entry.get()]
+    a_entry.insert(0,details[0])
+    m_entry.insert(0,details[1])
+    e_entry.insert(0,details[2])
+    b_entry.insert(0,details[3])
+
+def open():
+    global myAddressBook
+    f = askopenfile(title="Choose a file")
+    if f:
+        myAddressBook = eval(f.read())
+        for key in myAddressBook.keys():
+            book_list.insert(END,key)
+
+def delete():
+    key = book_list.curselection()
+    if key:# if it is existing or not
+        book_list.delete(key)
+        del myAddressBook[book_list.get(key)]
+        clear_all()
 
 address_title = Label(window,text="My Address Book")
 n_label = Label(window,text="Name:")
@@ -52,9 +76,9 @@ m_entry = Entry(window, width=35)
 e_entry = Entry(window, width=35)
 b_entry = Entry(window, width=35)
 
-o_button = Button(window,text="Open")
-e_button = Button(window,text="Edit")
-d_button = Button(window,text="Delete")
+o_button = Button(window,text="Open",command=open)
+e_button = Button(window,text="Edit",command=edit_file)
+d_button = Button(window,text="Delete",command=delete)
 u_button = Button(window,text="Update/Add",command=update)
 s_button = Button(window,text="Save",width=20, command=save)
 
